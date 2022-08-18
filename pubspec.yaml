@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -30,10 +30,34 @@ dependencies:
   flutter:
     sdk: flutter
 
+  firebase_core: ^1.20.1
+  cloud_firestore: ^3.4.3
+  cupertino_icons: ^1.0.2
+  custom_navigation_bar: ^0.8.2
+  dropdown_button2: ^1.7.1
+  faker: ^2.0.0
+  file_picker: ^5.0.1
+  firebase_auth: ^3.3.20
+
+  firebase_database: ^9.0.16
+  firebase_messaging: ^12.0.1
+  firebase_storage: ^10.3.5
+  shared_preferences: ^2.0.15
+  google_sign_in: ^5.4.1
+  flutter_chat_types: ^3.4.5
+  flutter_firebase_chat_core: ^1.6.3
+  flutter_chat_ui: ^1.6.4
+  mime: ^1.0.2
+  image_picker: ^0.8.5+3
+  path_provider: ^2.0.11
+  flutter_local_notifications: ^9.8.0
+  responsive_framework: ^0.2.0
+  velocity_x: ^3.5.1
+  url_strategy: ^0.2.0
+  flutter_svg: ^1.1.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +75,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -61,6 +84,8 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -73,6 +98,18 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: DM Sans
+      fonts:
+        - asset: assets/fonts/DMSans-Regular.ttf
+        - asset: assets/fonts/DMSans-Italic.ttf
+          style: italic
+
+    - family: Cabin
+      fonts:
+        - asset: assets/fonts/Cabin-Regular.otf
+        - asset: assets/fonts/Cabin-Italic.otf
+          style: italic
   # fonts:
   #   - family: Schyler
   #     fonts:
