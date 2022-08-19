@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:nakshekadam_web/common_widgets/base_background.dart';
+import 'package:nakshekadam_web/common_widgets/base_components.dart';
 
 import 'package:nakshekadam_web/globals.dart';
 import 'package:nakshekadam_web/screens/login_signup/components.dart';

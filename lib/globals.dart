@@ -23,14 +23,11 @@ const String CAREER_OPTIONS_BOTTOM_SHEETS_ILLUSTRATIONS_DIRECTORY =
 const String CAREER_OPTIONS_BOTTOM_SHEET_ICON_DIRECTORY =
     "assets/images/bottom_sheet_illustrations/career_options_icons";
 
-const String RESOURCE_CARD_IMAGES =
-    "assets/images/resource_card_images";
+const String RESOURCE_CARD_IMAGES = "assets/images/resource_card_images";
 
-const String COUNSELLOR_CARD_IMAGES =
-    "assets/images/counsellor_card_images";
+const String COUNSELLOR_CARD_IMAGES = "assets/images/counsellor_card_images";
 
-const String TESTS_CARD_IMAGES =
-    "assets/images/tests_card_images";
+const String TESTS_CARD_IMAGES = "assets/images/tests_card_images";
 
 const Map<String, dynamic> AGORA_CONFIG = {
   "appId": "3e7fb43c9b264f02892cf9a4177e4b80",
@@ -53,6 +50,12 @@ const Map<String, Color> COLOR_THEME = {
   "backgroundComponents2": Color(0xFFC1EFFF),
   "background": Color(0xFFFFFFFF),
 
+  "dashboard": Color(0xFFF8E3BB),
+  "overview1": Color(0xFFFFB3B3),
+  "overview2": Color(0xFF9CFB8D),
+  "overview3": Color(0xFFFFC04C),
+
+  "graphBg": Color(0xFFC1EFFF),
   // Home Page Colors
 
   // "primary": Color(0xFF42C2FF),

@@ -2,7 +2,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
-import 'package:nakshekadam_web/common_widgets/base_background.dart';
+import 'package:nakshekadam_web/common_widgets/base_components.dart';
 import 'package:nakshekadam_web/globals.dart';
 import 'package:nakshekadam_web/screens/login_signup/components.dart';
 import 'package:nakshekadam_web/services/Firebase/fireauth/fireauth.dart';

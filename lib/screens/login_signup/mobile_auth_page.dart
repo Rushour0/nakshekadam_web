@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
-import 'package:nakshekadam_web/common_widgets/base_background.dart';
+import 'package:nakshekadam_web/common_widgets/base_components.dart';
 import 'package:nakshekadam_web/screens/login_signup/components.dart';
 
-class AadharPage extends StatefulWidget {
-  const AadharPage({Key? key}) : super(key: key);
+class MobileAuthPage extends StatefulWidget {
+  MobileAuthPage({Key? key}) : super(key: key);
 
   @override
-  State<AadharPage> createState() => _AadharPageState();
+  State<MobileAuthPage> createState() => _MobileAuthPageState();
 }
 
-class _AadharPageState extends State<AadharPage> {
-  final TextEditingController aadharController = TextEditingController();
-
-  Future<void> sendOTP(screenWidth) async {}
+class _MobileAuthPageState extends State<MobileAuthPage> {
+  final TextEditingController mobileController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +52,7 @@ class _AadharPageState extends State<AadharPage> {
                 SizedBox(
                   width: screenWidth * 0.45,
                   child: normalformfield(
-                    aadharController,
+                    mobileController,
                     screenHeight,
                     setState,
                     'Enter Aadhar Number',
@@ -66,7 +64,9 @@ class _AadharPageState extends State<AadharPage> {
                   child: continueCard(
                     screenWidth,
                     screenHeight,
-                    onClickFunction: sendOTP,
+                    onClickFunction: (value) {
+                      print(value);
+                    },
                     title: 'Send OTP',
                     setState: setState,
                   ),

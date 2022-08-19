@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nakshekadam_web/firebase_options.dart';
 import 'package:nakshekadam_web/globals.dart';
-import 'package:nakshekadam_web/screens/login_signup/aadhar_page.dart';
+import 'package:nakshekadam_web/screens/login_signup/aadhar/aadhar_otp_page.dart';
+import 'package:nakshekadam_web/screens/login_signup/aadhar/aadhar_page.dart';
 import 'package:nakshekadam_web/screens/login_signup/details_page.dart';
 import 'package:nakshekadam_web/screens/login_signup/intro_page.dart';
 import 'package:nakshekadam_web/screens/login_signup/login_page.dart';
@@ -17,9 +18,12 @@ import 'package:nakshekadam_web/services/FlyerFirebaseChat/rooms.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  WebView.platform = WebWebViewPlatform();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -42,7 +46,7 @@ class MyApp extends StatelessWidget {
       routeInformationParser: VxInformationParser(),
       routerDelegate: VxNavigator(
         routes: {
-          '/': (uri, params) => const MaterialPage(child: AadharPage()),
+          '/': (uri, params) => const MaterialPage(child: MainPage()),
           '/intro': (uri, params) => const MaterialPage(child: IntroPage()),
           '/login': (uri, params) => const MaterialPage(child: LoginPage()),
           '/signup': (uri, params) => const MaterialPage(child: SignUpPage()),
@@ -53,6 +57,8 @@ class MyApp extends StatelessWidget {
           '/chatroom': (uri, params) => const MaterialPage(child: RoomsPage()),
           // '/wt': (uri,params) => const WalkThrough(),
           '/main': (uri, params) => const MaterialPage(child: MainPage()),
+          '/aadhar_otp': (uri, params) =>
+              const MaterialPage(child: AadharWebViewPage()),
 
           // '/': (context) => const Splash(),
         },

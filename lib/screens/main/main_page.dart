@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nakshekadam_web/common_widgets/base_background.dart';
+import 'package:nakshekadam_web/common_widgets/base_components.dart';
 import 'package:nakshekadam_web/globals.dart';
+import 'package:nakshekadam_web/screens/main/components.dart';
+import 'package:nakshekadam_web/screens/main/tabs/home/home_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -11,88 +13,59 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  final VerticalTabController _controller = VerticalTabController();
+
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
-    return baseBackground(
+    return mainBackground(
       height: screenHeight,
       width: screenWidth,
-      child: Center(
+      sideBar: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              'A one-stop personalized guide to navigate all your career related confusions',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: screenHeight * 0.03,
-                fontFamily: 'DM Sans',
-              ),
-            ),
             Image.asset(
               'assets/images/app_icon.png',
               width: screenWidth * 0.2,
-              height: screenWidth * 0.2,
+              height: screenWidth * 0.15,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: COLOR_THEME['secondary'],
-                fixedSize: Size(screenWidth * 0.35, screenHeight * 0.055),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    screenHeight * 0.01,
-                  ),
-                ),
+            VerticalTabBar(
+              initialIndex: 0,
+              controller: _controller,
+              labelStyle: TextStyle(
+                fontFamily: 'DM Sans',
+                fontSize: screenWidth * 0.0125,
               ),
-              onPressed: () {},
-              child: Text(
-                'SIGN UP',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: screenHeight * 0.035,
-                  fontFamily: 'DM Sans',
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: screenHeight * 0.045,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Already have an account?",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: screenWidth * 0.01,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  child: Text(
-                    "Login",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.blue,
-
-                      // fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      fontSize: screenWidth * 0.01,
-                    ),
-                  ),
-                ),
+              tabs: [
+                VerticalTabBarItem(
+                    icon: Icon(Icons.home_outlined), label: 'Home'),
+                VerticalTabBarItem(
+                    icon: Icon(Icons.info_outline), label: 'Student Types'),
+                VerticalTabBarItem(
+                    icon: Icon(Icons.move_to_inbox_outlined),
+                    label: 'Incoming requests'),
+                VerticalTabBarItem(
+                    icon: Icon(Icons.message_outlined), label: 'Messages'),
+                VerticalTabBarItem(
+                    icon: Icon(Icons.notifications_active_outlined),
+                    label: 'Notifications'),
               ],
-            )
+            ),
           ],
         ),
+      ),
+      mainView: VerticalTabBarView(
+        controller: _controller,
+        children: [
+          // Container(child: Center(child: Text('1'))),
+          HomePage(),
+          Container(child: Center(child: Text('1'))),
+          Container(child: Center(child: Text('2'))),
+          Container(child: Center(child: Text('3'))),
+          Container(child: Center(child: Text('4'))),
+        ],
       ),
     );
   }
