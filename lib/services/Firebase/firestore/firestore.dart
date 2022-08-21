@@ -1,9 +1,10 @@
-import 'package:nakshekadam_web/services/Firebase/FireAuth/fireauth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nakshekadam_web/services/Firebase/fireauth/fireauth.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 CollectionReference userDocumentCollection({required String collection}) {
+  print(getCurrentUserId());
   return firestore
       .collection('users')
       .doc(getCurrentUserId())

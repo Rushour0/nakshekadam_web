@@ -13,6 +13,12 @@ class ClientCard extends StatefulWidget {
   State<ClientCard> createState() => _ClientCardState();
 }
 
+List<String> clientType = [
+  'Closed Clients',
+  'Current Clients',
+  'Pending Requests',
+];
+
 class _ClientCardState extends State<ClientCard> {
   @override
   Widget build(BuildContext context) {
@@ -22,26 +28,18 @@ class _ClientCardState extends State<ClientCard> {
       crossAxisAlignment: WrapCrossAlignment.center,
       alignment: WrapAlignment.spaceBetween,
       spacing: screenWidth * 0.02,
-      children: [
-        ClientOverviewCard(
-          type: 'Closed Clients',
-          color: COLOR_THEME['overview1']!,
-          count: 8,
-          imagePath: 'assets/images/closed_client.png',
-        ),
-        ClientOverviewCard(
-          type: 'Current Clients',
-          color: COLOR_THEME['overview2']!,
-          count: 8,
-          imagePath: 'assets/images/current_client.png',
-        ),
-        ClientOverviewCard(
-          type: 'Pending Requests',
-          color: COLOR_THEME['overview3']!,
-          count: 8,
-          imagePath: 'assets/images/pending_requests.png',
-        ),
-      ],
+      children: clientType
+          .asMap()
+          .keys
+          .map(
+            (index) => ClientOverviewCard(
+                type: clientType[index],
+                color: COLOR_THEME['overview${index + 1}']!,
+                count: 8,
+                imagePath:
+                    '$IMAGE_DIRECTORY/${clientType[index].toLowerCase().replaceAll(' ', '_')}.png'),
+          )
+          .toList(),
     );
   }
 }

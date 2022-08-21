@@ -3,12 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import 'chat.dart';
-import 'package:nakshekadam_web/firebase_options.dart';
+import 'firebase_options.dart';
 import 'login.dart';
 import 'users.dart';
 import 'util.dart';
@@ -28,13 +26,11 @@ class _RoomsPageState extends State<RoomsPage> {
   @override
   void initState() {
     initializeFlutterFire();
-    print('water');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("$_error : $_initialized");
     if (_error) {
       return Container();
     }
@@ -79,7 +75,12 @@ class _RoomsPageState extends State<RoomsPage> {
                   const Text('Not authenticated'),
                   TextButton(
                     onPressed: () {
-                      VxNavigator.of(context).push(Uri.parse('/login'));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => const ChatLoginPage(),
+                        ),
+                      );
                     },
                     child: const Text('Login'),
                   ),
@@ -149,7 +150,6 @@ class _RoomsPageState extends State<RoomsPage> {
         _initialized = true;
       });
     } catch (e) {
-      print(e);
       setState(() {
         _error = true;
       });

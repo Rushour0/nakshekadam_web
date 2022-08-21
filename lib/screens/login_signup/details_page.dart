@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:nakshekadam_web/common_widgets/base_components.dart';
 import 'package:nakshekadam_web/globals.dart';
 import 'package:nakshekadam_web/screens/login_signup/components.dart';
+import 'package:nakshekadam_web/services/Firebase/fireauth/fireauth.dart';
+import 'package:nakshekadam_web/services/Firebase/firestore/firestore.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -19,26 +22,94 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   final TextEditingController qualificationController = TextEditingController();
+  final TextEditingController universityNameController =
+      TextEditingController();
+  final TextEditingController specialisationController =
+      TextEditingController();
+  final TextEditingController experienceController = TextEditingController();
+  FileStorage _educationFile = FileStorage(), _experienceFile = FileStorage();
   bool _declaration = false;
   bool _experience = false;
+
+  void showSnackBar(String message) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        message,
+        style: TextStyle(
+          fontFamily: 'Cabin',
+          fontSize: screenHeight * 0.035,
+          color: COLOR_THEME['buttonText'],
+        ),
+      ),
+      backgroundColor: COLOR_THEME['buttonBackground'],
+    ));
+  }
+
   bool validateAccept(screenHeight) {
-    VxNavigator.of(context).push(Uri.parse('/main'));
+    if (qualificationController.text == '') {
+      showSnackBar('Please enter your qualification');
+      return false;
+    }
+    if (_educationFile.url == null) {
+      showSnackBar('Please upload your education certificate');
+      return false;
+    }
+    if (universityNameController.text == '') {
+      showSnackBar('Please enter your university name');
+      return false;
+    }
+
+    if (_experience) {
+      if (specialisationController.text == '') {
+        showSnackBar('Please enter your specialisation');
+        return false;
+      }
+      if (_experienceFile.url == null) {
+        showSnackBar('Please upload your experience certificate');
+        return false;
+      }
+      if (experienceController.text == '') {
+        showSnackBar('Please enter your experience');
+        return false;
+      }
+    }
+    if (!_declaration) {
+      showSnackBar('Please accept the declaration');
+      return false;
+    }
+    userDocumentReference().set({
+      'qualification': qualificationController.text,
+      'universityName': universityNameController.text,
+      'specialisation': specialisationController.text,
+      'experience': experienceController.text,
+      'experienceFile': _experienceFile.url,
+      'educationFile': _educationFile.url,
+      'declaration': _declaration,
+      'detailsFilled': true,
+    }, SetOptions(merge: true));
+    VxNavigator.of(context).push(Uri.parse('/aadhar'));
     // VxNavigator.of(context).push(Uri.parse('/aadhar_auth'));
     return false;
   }
 
-  Future<void> pickAFile(screenHeight) async {
+  Future<String> pickAFile(screenHeight) async {
+    Reference? fileReference;
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
       Uint8List? fileBytes = result.files.first.bytes;
-      String fileName = result.files.first.name;
+      setState(() {});
+      String fileName = getCurrentUserId() + result.files.first.name;
 
       // Upload file
       try {
-        await FirebaseStorage.instance
-            .ref('uploads/$fileName')
-            .putData(fileBytes!);
+        fileReference = FirebaseStorage.instance.ref('uploads/$fileName');
+
+        fileReference
+            .putData(fileBytes!)
+            .whenComplete(() => showSnackBar('File Uploaded'));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -55,6 +126,7 @@ class _DetailsPageState extends State<DetailsPage> {
         );
       }
     }
+    return fileReference!.getDownloadURL();
   }
 
   @override
@@ -108,6 +180,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         screenHeight,
                         onClickFunction: pickAFile,
                         setState: setState,
+                        setFileUrl: _educationFile.setFileUrl,
                       ),
                     )
                   ],
@@ -126,7 +199,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             title: 'University Name:',
                           ),
                           normalformfield(
-                            qualificationController,
+                            universityNameController,
                             screenHeight,
                             setState,
                             'Enter Text',
@@ -146,7 +219,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             title: 'Specialisation :',
                           ),
                           normalformfield(
-                            qualificationController,
+                            specialisationController,
                             screenHeight,
                             setState,
                             'Enter Text',
@@ -211,7 +284,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         title: 'Experience (in yrs) *if yes:',
                       ),
                       normalformfield(
-                        qualificationController,
+                        experienceController,
                         screenHeight,
                         setState,
                         'Enter Text',
@@ -233,6 +306,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       child: uploadButton(
                         screenWidth,
                         screenHeight,
+                        setFileUrl: _experienceFile.setFileUrl,
                         onClickFunction: pickAFile,
                         setState: setState,
                         enabled: _experience,
@@ -273,5 +347,18 @@ class _DetailsPageState extends State<DetailsPage> {
       width: screenWidth,
       height: screenHeight,
     );
+  }
+}
+
+class FileStorage {
+  Reference? _reference;
+  String? _fileName;
+  String? _url;
+
+  Reference? get reference => _reference;
+  String? get url => _url;
+  String? get fileName => _fileName;
+  setFileUrl(url) {
+    _url = url;
   }
 }

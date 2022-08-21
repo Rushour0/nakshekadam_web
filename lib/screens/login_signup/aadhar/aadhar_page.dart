@@ -5,6 +5,7 @@ import 'package:nakshekadam_web/common_widgets/base_components.dart';
 import 'package:nakshekadam_web/globals.dart';
 import 'package:nakshekadam_web/screens/login_signup/components.dart';
 import 'package:nakshekadam_web/services/AadharOTP/otp_auth.dart';
+import 'package:nakshekadam_web/services/Firebase/fireauth/fireauth.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class AadharPage extends StatefulWidget {
@@ -29,6 +30,16 @@ class _AadharPageState extends State<AadharPage> {
       TextEditingController(text: '483320406191');
   Aadhar aadhar = Aadhar();
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> sendOTP(screenHeight) async {
     if (aadharController.text.isValidAadharNumber()) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -44,7 +55,10 @@ class _AadharPageState extends State<AadharPage> {
       ));
       return;
     }
-    Map<String, dynamic> results = await aadharSignIn();
+    setState(() {});
+    String userId = getCurrentUserId();
+    print(userId);
+    Map<String, dynamic> results = await aadharSignIn(userId);
     print(results);
     aadhar.setId = results['id'];
     aadhar.setLink = results['url'];

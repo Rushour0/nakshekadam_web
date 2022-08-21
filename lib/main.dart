@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:nakshekadam_web/firebase_options.dart';
 import 'package:nakshekadam_web/globals.dart';
 import 'package:nakshekadam_web/screens/login_signup/aadhar/aadhar_otp_page.dart';
@@ -11,7 +13,9 @@ import 'package:nakshekadam_web/screens/login_signup/login_page.dart';
 import 'package:nakshekadam_web/screens/login_signup/setup_complete_page.dart';
 import 'package:nakshekadam_web/screens/login_signup/signup_page.dart';
 import 'package:nakshekadam_web/screens/main/main_page.dart';
+import 'package:nakshekadam_web/screens/splash.dart';
 import 'package:nakshekadam_web/services/Firebase/push_notification/push_notification_service.dart';
+import 'package:nakshekadam_web/services/FlyerFirebaseChat/chat.dart';
 import 'package:nakshekadam_web/services/FlyerFirebaseChat/login.dart';
 import 'package:nakshekadam_web/services/FlyerFirebaseChat/rooms.dart';
 
@@ -23,7 +27,7 @@ import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  WebView.platform = WebWebViewPlatform();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -33,6 +37,7 @@ void main() async {
   // print('TOKEN : ${await FirebaseMessaging.instance.getToken()}');
 
   setPathUrlStrategy();
+
   runApp(const MyApp());
 }
 
@@ -46,7 +51,7 @@ class MyApp extends StatelessWidget {
       routeInformationParser: VxInformationParser(),
       routerDelegate: VxNavigator(
         routes: {
-          '/': (uri, params) => const MaterialPage(child: MainPage()),
+          '/': (uri, params) => const MaterialPage(child: SplashPage()),
           '/intro': (uri, params) => const MaterialPage(child: IntroPage()),
           '/login': (uri, params) => const MaterialPage(child: LoginPage()),
           '/signup': (uri, params) => const MaterialPage(child: SignUpPage()),
@@ -59,6 +64,9 @@ class MyApp extends StatelessWidget {
           '/main': (uri, params) => const MaterialPage(child: MainPage()),
           '/aadhar_otp': (uri, params) =>
               const MaterialPage(child: AadharWebViewPage()),
+          '/setup_complete': (uri, params) =>
+              const MaterialPage(child: SetupCompletePage()),
+          '/chat': (uri, params) => MaterialPage(child: ChatPage(room: params)),
 
           // '/': (context) => const Splash(),
         },

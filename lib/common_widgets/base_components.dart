@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nakshekadam_web/globals.dart';
+import 'package:nakshekadam_web/screens/main/tabs/incoming_requests/components.dart';
 
 Widget baseBackground({
   required child,
@@ -82,12 +83,13 @@ Widget mainBackground({
 }
 
 Widget mainViewAppBar({
-  required child,
-  required width,
-  required height,
-  required page,
-  name,
-  photoURL,
+  required String page,
+  required double width,
+  required double height,
+  required Widget child,
+  TextEditingController? searchController,
+  String? name,
+  String? photoURL,
 }) {
   return Scaffold(
     backgroundColor: Colors.transparent,
@@ -102,6 +104,7 @@ Widget mainViewAppBar({
           fontSize: width * 0.0175,
         ),
       ),
+      backgroundColor: COLOR_THEME['secondary'],
       centerTitle: true,
       actions: [
         Padding(
@@ -141,10 +144,47 @@ Widget mainViewAppBar({
           ),
         ),
       ),
-      SizedBox(
-        width: width * 0.75,
-        height: height * 0.825,
-        child: SingleChildScrollView(child: child),
+      Column(
+        children: [
+          searchController != null
+              ? Padding(
+                  padding: EdgeInsets.only(top: height * 0.025),
+                  child: SizedBox(
+                    width: width * 0.75,
+                    child: Flex(
+                      direction: Axis.horizontal,
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: SearchDropDownFilter(
+                              items: ['items'], onChanged: (value) {}),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: SearchDropDownFilter(
+                              items: ['items'], onChanged: (value) {}),
+                        ),
+                        Flexible(
+                          flex: 10,
+                          child: SearchFormField(
+                            searchController: searchController,
+                            hintText: 'Search',
+                            redirectFunction: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : Container(),
+          SizedBox(
+            width: width * 0.75,
+            height: height * (searchController == null ? 0.825 : 0.75),
+            child: SingleChildScrollView(child: child),
+          ),
+        ],
       ),
     ]),
   );

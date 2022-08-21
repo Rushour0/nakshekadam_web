@@ -4,11 +4,11 @@ import 'rooms.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const OtherApp());
+  runApp(const MyApp());
 }
 
-class OtherApp extends StatelessWidget {
-  const OtherApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) => MaterialApp(

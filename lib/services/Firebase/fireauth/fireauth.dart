@@ -1,9 +1,11 @@
-import 'dart:html';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:nakshekadam_web/globals.dart';
 
 import 'package:nakshekadam_web/services/Firebase/fireAuth/google_auth.dart'
     as google_auth;
@@ -24,7 +26,7 @@ Future<bool> signInWithGoogle() async {
 
   CollectionReference users = usersCollectionReference();
 
-  if (!(await users.doc(result!.user!.email).get()).exists) {
+  if (!(await users.doc(result!.user!.uid).get()).exists) {
     initialData();
   }
   if (result.user!.uid == _auth.currentUser!.uid) {
@@ -79,7 +81,9 @@ Future<List<dynamic>> passwordResetEmailUser({required String email}) async {
 
 // New register
 Future<List<dynamic>> registerUser(
-    {required String email, required String password}) async {
+    {required String name,
+    required String email,
+    required String password}) async {
   try {
     await _auth.createUserWithEmailAndPassword(
       email: email,
@@ -96,6 +100,9 @@ Future<List<dynamic>> registerUser(
   }
 
   // Successful registration
+  await _auth.currentUser!.updateDisplayName(
+    name,
+  );
 
   initialData();
 
@@ -103,7 +110,7 @@ Future<List<dynamic>> registerUser(
 }
 
 // Check if user is admin
-Future<bool?> checkAdmin() async {
+Future<bool> checkAdmin() async {
   DocumentReference user = userDocumentReference();
   Map<String, dynamic>? data =
       (await user.get()).data() as Map<String, dynamic>;
@@ -130,10 +137,37 @@ Future<bool> checkFormFilled() async {
   return false;
 }
 
+// Check if form is filled
+Future<bool> checkAadhar() async {
+  CollectionReference users = usersCollectionReference();
+  User user = getCurrentUser()!;
+  if (checkLoggedIn()) {
+    Map<String, dynamic> data =
+        (await users.doc(user.uid).get()).data() as Map<String, dynamic>;
+    print(data);
+    return data['aadharFilled'] ?? false;
+  }
+  return false;
+}
+
+// Check if details are filled
+Future<bool> checkDetails() async {
+  CollectionReference users = usersCollectionReference();
+  User user = getCurrentUser()!;
+  if (checkLoggedIn()) {
+    Map<String, dynamic> data =
+        (await users.doc(user.uid).get()).data() as Map<String, dynamic>;
+    print(data);
+    return data['detailsFilled'] ?? false;
+  }
+
+  return false;
+}
+
 // Get current user id
 String getCurrentUserId() {
   if (checkLoggedIn()) {
-    return _auth.currentUser!.email as String;
+    return _auth.currentUser!.uid;
   }
   return "none";
 }
@@ -151,7 +185,9 @@ bool checkLoggedIn() {
 
 // Sign out user
 Future<bool> signOut() async {
-  await deviceFCMKeyOperations();
+  if (kIsWeb) {
+    await deviceFCMKeyOperations();
+  }
   await _auth.signOut();
   return !checkLoggedIn();
 }
@@ -167,13 +203,20 @@ Future<bool> signOutGoogle() async {
 void initialData() async {
   CollectionReference users = usersCollectionReference();
   print(kIsWeb);
-  await users.doc(_auth.currentUser!.email).set({
-    "email": _auth.currentUser!.email,
-    "formFilled": false,
-    "isAdmin": false,
-    "role": "none",
+  User user = getCurrentUser()!;
+
+  await FirebaseChatCore.instance.createUserInFirestore(
+    types.User(
+      firstName: user.displayName!.split(' ')[0],
+      id: user.uid,
+      imageUrl: user.photoURL ?? DEFAULT_PROFILE_PICTURE,
+      lastName: user.displayName!.split(' ')[1],
+      role: types.Role.counsellor,
+    ),
+  );
+  await users.doc(user.uid).set({
     'deviceIDs': (!kIsWeb) ? {FirebaseMessaging.instance.getToken(): 0} : {},
-  });
+  }, SetOptions(merge: true));
 }
 
 Future<bool> deviceFCMKeyOperations({bool add = false}) async {

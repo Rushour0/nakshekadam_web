@@ -4,9 +4,11 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nakshekadam_web/classes/aadhar.dart';
+import 'package:nakshekadam_web/common_widgets/base_components.dart';
 import 'package:nakshekadam_web/globals.dart';
 import 'package:nakshekadam_web/services/AadharOTP/otp_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:velocity_x/velocity_x.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webviewx/webviewx.dart';
 
@@ -18,19 +20,48 @@ class AadharWebViewPage extends StatefulWidget {
 }
 
 class _AadharWebViewPageState extends State<AadharWebViewPage> {
-  final TextEditingController aadharController = TextEditingController();
-  late WebViewXController webViewController;
-  late Image image;
-  bool imageReady = false;
-  bool isLoading = false;
+  int countdown = 120;
   final Aadhar aadhar = Aadhar();
-  bool firstLink = true;
+  final AadharAuthenticationNotifier authenticationNotifier =
+      AadharAuthenticationNotifier();
+  bool done = false;
 
   String requestID = "", link = "", number = "", otp = "";
+  SnackBar aadharLoginStatus(bool isSuccess) => SnackBar(
+        content: Text(
+          "Aadhar Login ${isSuccess ? 'Success' : 'Failed'}",
+          style: TextStyle(
+            fontFamily: 'Cabin',
+            fontSize: MediaQuery.of(context).size.width * 0.02,
+            color: COLOR_THEME['buttonText'],
+          ),
+        ),
+        backgroundColor: COLOR_THEME['buttonBackground'],
+      );
 
-  void resetWebView() {
-    firstLink = true;
-    isLoading = false;
+  void notifyOnAuthenticated() {
+    authenticationNotifier.addListener(() async {
+      countdown = authenticationNotifier.secondsRemaining;
+      setState(() {});
+      if (authenticationNotifier.isAuthenticated && !done) {
+        done = true;
+        print("Aadhar is authenticated");
+        done = true;
+        ScaffoldMessenger.of(context).showSnackBar(
+            aadharLoginStatus(authenticationNotifier.isAuthenticated));
+
+        VxNavigator.of(context).clearAndPush(Uri.parse('/setup_complete'));
+      } else if (!authenticationNotifier.isAuthenticated &&
+          authenticationNotifier.secondsRemaining == 0 &&
+          !done) {
+        print("Aadhar was not authenticated");
+        done = true;
+        ScaffoldMessenger.of(context).showSnackBar(
+            aadharLoginStatus(authenticationNotifier.isAuthenticated));
+
+        await VxNavigator.of(context).clearAndPush(Uri.parse('/aadhar'));
+      }
+    });
   }
 
   @override
@@ -38,31 +69,40 @@ class _AadharWebViewPageState extends State<AadharWebViewPage> {
     requestID = aadhar.id;
     number = aadhar.number;
     link = aadhar.link;
+    notifyOnAuthenticated();
     super.initState();
   }
 
-  void getLinks() async {
-    print("MY AADHAR:$number");
+  @override
+  void dispose() {
+    authenticationNotifier.removeListener(() {
+      countdown = authenticationNotifier.secondsRemaining;
+      setState(() {});
+      if (authenticationNotifier.isAuthenticated) {
+        print("Aadhar is authenticated");
 
-    setState(() {});
+        ScaffoldMessenger.of(context).showSnackBar(
+            aadharLoginStatus(authenticationNotifier.isAuthenticated));
+
+        VxNavigator.of(context).clearAndPush(Uri.parse('/main'));
+      } else if (!authenticationNotifier.isAuthenticated &&
+          authenticationNotifier.secondsRemaining == 0) {
+        print("Aadhar was not authenticated");
+        ScaffoldMessenger.of(context).showSnackBar(
+            aadharLoginStatus(authenticationNotifier.isAuthenticated));
+
+        VxNavigator.of(context).clearAndPush(Uri.parse('/aadhar'));
+      }
+    });
+    authenticationNotifier.dispose();
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
-
-    SnackBar aadharLoginStatus(isSuccess) => SnackBar(
-          content: Text(
-            "Aadhar Login ${isSuccess ? 'Success' : 'Failed'}",
-            style: TextStyle(
-              fontFamily: 'Cabin',
-              fontSize: screenWidth * 0.04,
-              color: COLOR_THEME['buttonText'],
-            ),
-          ),
-          backgroundColor: COLOR_THEME['buttonBackground'],
-        );
 
     Future<void> _launchUrl() async {
       if (!await launchUrl(
@@ -77,148 +117,31 @@ class _AadharWebViewPageState extends State<AadharWebViewPage> {
 
     _launchUrl();
 
-    return Scaffold(
-      body:
-          //   SizedBox(
-          // height: screenHeight * 0.9,
-          // width: screenWidth,
-          // child: WebView(
-          //   initialUrl: link,
-          // zoomEnabled: false,
-          // javascriptMode: JavascriptMode.unrestricted,
-          // onPageStarted: (url) async {
-          //   print(await webViewController.getTitle());
-          //   if (firstLink) {
-          //     for (int num = 1; num < 4; num++) {
-          //       (await webViewController.runJavascriptReturningResult(
-          //           "window.document.getElementById('aadhaar_$num').value = ${number.substring((num - 1) * 4, num * 4)};"));
-          //     }
-          //     await Future.delayed(
-          //         Duration(seconds: 1),
-          //         () async => await webViewController.runJavascriptReturningResult(
-          //             "document.getElementsByName('sendButton')[0].click();"));
-          //   }
-
-          //   firstLink = false;
-          //   print(url);
-          //   if (url ==
-          //       "https://aadharotp.rushour0.repl.co/digilocker/aadhar?success=True&id=$requestID") {
-          //     String rawJson = (await webViewController.runJavascriptReturningResult(
-          //         "window.document.getElementsByTagName('html')[0].outerHTML;"));
-          //     setState(() {});
-          //     Map<String, dynamic> data = jsonDecode(
-          //       rawJson
-          //           .substring(
-          //             rawJson.indexOf('{'),
-          //             rawJson.lastIndexOf('}') + 1,
-          //           )
-          //           .replaceAll(r'\n', '')
-          //           .replaceAll(r'\', ''),
-          //     );
-
-          //     print(data);
-          //     Uint8List photo = base64Decode(data['aadhaar']['photo']);
-
-          //     imageReady = true;
-
-          //     ScaffoldMessenger.of(context).showSnackBar(aadharLoginStatus(true));
-          //     // Loading image from aadhar card
-          //     image = Image.memory(photo);
-          //     resetWebView();
-          //   } else if (url ==
-          //       'https://aadharotp.rushour0.repl.co/digilocker/aadhar?success=False&id=$requestID') {
-          //     print('failure');
-          //     resetWebView();
-          //     ScaffoldMessenger.of(context)
-          //         .showSnackBar(aadharLoginStatus(false));
-          //   }
-          // },
-          // onWebViewCreated: (controller) {
-          //   webViewController = controller;
-          // },
-          //   ),
-          // )
-          WebViewX(
-        webSpecificParams: WebSpecificParams(
-          printDebugInfo: true,
-          webAllowFullscreenContent: true,
+    return detailsBackground(
+      child: Center(
+        child: Column(
+          children: [
+            Text(
+              'Authenticating your Aadhar Number',
+              style: TextStyle(
+                fontFamily: 'Cabin',
+                fontSize: screenWidth * 0.03,
+                color: COLOR_THEME['buttonText'],
+              ),
+            ),
+            Text(
+              'Valid for $countdown seconds',
+              style: TextStyle(
+                fontFamily: 'Cabin',
+                fontSize: screenWidth * 0.02,
+                color: COLOR_THEME['buttonText'],
+              ),
+            ),
+          ],
         ),
-        initialContent: '<h1> You are being redirected !</h1>',
-        initialSourceType: SourceType.html,
-        width: screenWidth,
-        height: screenHeight,
-        javascriptMode: JavascriptMode.unrestricted,
-        jsContent: const {
-          EmbeddedJsContent(
-            js: "function testPlatformIndependentMethod() { console.log('Hi from JS') }",
-          ),
-          EmbeddedJsContent(
-            webJs:
-                "function testPlatformSpecificMethod(msg) { TestDartCallback('Web callback says: ' + msg) }",
-            mobileJs:
-                "function testPlatformSpecificMethod(msg) { TestDartCallback.postMessage('Mobile callback says: ' + msg) }",
-          ),
-        },
-        onPageStarted: (url) async {
-          // print(await webViewController.getContent());
-          if (url != link) return;
-          if (firstLink) {
-            print('hi');
-            try {
-              for (int num = 1; num < 4; num++) {
-                (await webViewController.evalRawJavascript(
-                    "window.document.getElementById('aadhaar_$num').value = ${number.substring((num - 1) * 4, num * 4)};"));
-              }
-              await Future.delayed(
-                  Duration(seconds: 1),
-                  () async => await webViewController.evalRawJavascript(
-                      "document.getElementsByName('sendButton')[0].click();"));
-            } catch (e) {
-              print(e);
-            }
-          }
-          print(number);
-          firstLink = false;
-          print(url);
-          if (url ==
-              "https://aadharotp.rushour0.repl.co/digilocker/aadhar?success=True&id=$requestID") {
-            String rawJson = (await webViewController.evalRawJavascript(
-                "window.document.getElementsByTagName('html')[0].outerHTML;"));
-            setState(() {});
-            Map<String, dynamic> data = jsonDecode(
-              rawJson
-                  .substring(
-                    rawJson.indexOf('{'),
-                    rawJson.lastIndexOf('}') + 1,
-                  )
-                  .replaceAll(r'\n', '')
-                  .replaceAll(r'\', ''),
-            );
-
-            print(data);
-            Uint8List photo = base64Decode(data['aadhaar']['photo']);
-
-            imageReady = true;
-
-            ScaffoldMessenger.of(context).showSnackBar(aadharLoginStatus(true));
-            // Loading image from aadhar card
-            image = Image.memory(photo);
-            resetWebView();
-          } else if (url ==
-              'https://aadharotp.rushour0.repl.co/digilocker/aadhar?success=False&id=$requestID') {
-            print('failure');
-            resetWebView();
-            ScaffoldMessenger.of(context)
-                .showSnackBar(aadharLoginStatus(false));
-          }
-        },
-        onWebViewCreated: (controller) async {
-          webViewController = controller;
-          await webViewController.loadContent(link, SourceType.url);
-
-          print(webViewController);
-        },
       ),
+      width: screenWidth,
+      height: screenHeight,
     );
   }
 }

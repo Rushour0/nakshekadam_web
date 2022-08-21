@@ -17,16 +17,19 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -49,24 +52,13 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAaRZn1cCVpwi-iFyd541YzUSNp6knDR8s',
-    appId: '1:1035077222293:android:04f0c66a9d2ab6b3fc809c',
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCDcVc5OBdn6G7Eqn5sj0vZHWaK2KO070k',
+    appId: '1:1035077222293:web:fbd72f6e68d3821ffc809c',
     messagingSenderId: '1035077222293',
-    projectId: 'nakshekadam_web2022',
-    storageBucket: 'nakshekadam_web2022.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAwxsAXPMb9XFYMRad5xdlbj-7Hy7MeSIM',
-    appId: '1:1035077222293:ios:675c56caaa87a7acfc809c',
-    messagingSenderId: '1035077222293',
-    projectId: 'nakshekadam_web2022',
-    storageBucket: 'nakshekadam_web2022.appspot.com',
-    androidClientId:
-        '1035077222293-2g20trg8jqktcq79udsefqp1829goont.apps.googleusercontent.com',
-    iosClientId:
-        '1035077222293-5lt0a551e60j04ino38023n1ocifksof.apps.googleusercontent.com',
-    iosBundleId: 'com.underdogs.nakshekadam_web',
+    projectId: 'nakshekadam2022',
+    authDomain: 'nakshekadam2022.firebaseapp.com',
+    storageBucket: 'nakshekadam2022.appspot.com',
+    measurementId: 'G-SQLXWY80KR',
   );
 }

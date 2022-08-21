@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     return mainViewAppBar(
       width: screenWidth,
       height: screenHeight,
-      name: user != null ? user!.displayName ?? '' : '',
+      name: user != null ? user!.displayName ?? user!.email : '',
       // name: 'NaksheKADAM',
       // photoURL: user.photoURL ?? '',
       page: 'DASHBOARD',

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,23 +46,19 @@ class _SignUpPageState extends State<SignUpPage> {
       // errorTextPassword = errorTextConfirmPassword = "Passwords do not match!";
     } else {
       List<dynamic> result = await registerUser(
-          email: emailController.text, password: passwordController.text);
+        name: nameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
       print(result);
       if (result[0] == 0) {
-        await FirebaseChatCore.instance.createUserInFirestore(
-          types.User(
-            firstName: nameController.text.split(' ')[0],
-            id: getCurrentUserId(),
-            imageUrl: DEFAULT_PROFILE_PICTURE,
-            lastName: nameController.text.split(' ')[1],
-          ),
-        );
         // if ((await checkAdmin())!) {
         //   Navigator.pushNamedAndRemoveUntil(
         //       context, '/admin_main_page', (route) => false);
         // }
         await VxNavigator.of(context).push(
-          Uri.parse("/intro"),
+          Uri.parse("/details"),
         );
         passwordController.text =
             confirmPasswordController.text = emailController.text = '';
@@ -103,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
             borderRadius: BorderRadius.circular(screenHeight / 20),
             color: COLOR_THEME['secondary'],
           ),
-          height: screenHeight * 0.7,
+          height: screenHeight * 0.8,
           width: screenWidth * 0.7,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -204,6 +201,17 @@ class _SignUpPageState extends State<SignUpPage> {
                         onClickFunction: register,
                         setState: setState,
                       ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: screenHeight * 0.025),
+                      child: continueCard(screenWidth, screenHeight,
+                          onClickFunction: (value) async {
+                        await VxNavigator.of(context)
+                            .clearAndPush(Uri.parse('/login'));
+                      },
+                          setState: setState,
+                          title: 'Already have an account?\n Login',
+                          widthPercent: 0.15),
                     )
                   ],
                 ),

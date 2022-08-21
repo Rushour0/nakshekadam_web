@@ -1,6 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nakshekadam_web/globals.dart';
+import 'package:nakshekadam_web/screens/login_signup/details_page.dart';
 import 'package:nakshekadam_web/services/Firebase/fireauth/fireauth.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -273,7 +279,15 @@ Widget googleSignInCard(context, screenHeight, screenWidth, {bool? signIn}) {
         //   Navigator.pushNamedAndRemoveUntil(
         //       context, '/main_page', (route) => false);
         // } else {
-        await VxNavigator.of(context).clearAndPush(Uri.parse('/main'));
+        if (!(await checkDetails())) {
+          await VxNavigator.of(context).clearAndPush(Uri.parse('/details'));
+        }
+        if (await checkAadhar()) {
+          await VxNavigator.of(context).clearAndPush(Uri.parse('/main'));
+        } else {
+          await VxNavigator.of(context).clearAndPush(Uri.parse('/aadhar'));
+        }
+
         // }
       }
     }),
@@ -351,12 +365,13 @@ Widget continueCard(
   screenWidth,
   screenHeight, {
   String title = "CONTINUE",
-  required Function onClickFunction,
+  double widthPercent = 0.09,
+  required Function(dynamic) onClickFunction,
   Function(Function())? setState,
   BuildContext? context,
 }) {
   return SizedBox(
-    width: screenWidth * 0.09,
+    width: screenWidth * widthPercent,
     height: screenHeight * 0.06,
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -425,10 +440,12 @@ Widget ORWidget({required double screenHeight, required double screenWidth}) {
 Widget uploadButton(
   screenWidth,
   screenHeight, {
+  Function? setFileUrl,
   required Function onClickFunction,
   Function(Function())? setState,
   BuildContext? context,
   bool enabled = true,
+  String? fileName,
 }) {
   return SizedBox(
     width: screenWidth * 0.09,
@@ -445,6 +462,12 @@ Widget uploadButton(
           ? () async {
               print('I am pressed');
               if (setState != null) {
+                if (setFileUrl != null) {
+                  final value = await onClickFunction(screenHeight);
+                  setFileUrl(value);
+                  print(value);
+                  return;
+                }
                 setState(() {});
                 await onClickFunction(screenHeight);
               } else {

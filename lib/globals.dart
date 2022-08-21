@@ -10,24 +10,9 @@ const String DEFAULT_PROFILE_PICTURE =
 const String BOTTOM_NAVIGATION_IMAGE_DIRECTORY =
     "assets/images/bottom_navigation_icons";
 
-const String BANNER_IMAGE_DIRECTORY = "assets/images/banner_images";
+const String IMAGE_DIRECTORY = "assets/images";
 
-const String FEATURES_IMAGES_DIRECTORY = "assets/images/features_images";
-
-const String BOTTOM_SHEETS_ILLUSTRATIONS_DIRECTORY =
-    "assets/images/bottom_sheet_illustrations";
-
-const String CAREER_OPTIONS_BOTTOM_SHEETS_ILLUSTRATIONS_DIRECTORY =
-    "assets/images/career_options_bottom_sheet_illustrations";
-
-const String CAREER_OPTIONS_BOTTOM_SHEET_ICON_DIRECTORY =
-    "assets/images/bottom_sheet_illustrations/career_options_icons";
-
-const String RESOURCE_CARD_IMAGES = "assets/images/resource_card_images";
-
-const String COUNSELLOR_CARD_IMAGES = "assets/images/counsellor_card_images";
-
-const String TESTS_CARD_IMAGES = "assets/images/tests_card_images";
+const String STUDENT_TYPES_IMAGE_DIRECTORY = '$IMAGE_DIRECTORY/student_types';
 
 const Map<String, dynamic> AGORA_CONFIG = {
   "appId": "3e7fb43c9b264f02892cf9a4177e4b80",
@@ -56,6 +41,10 @@ const Map<String, Color> COLOR_THEME = {
   "overview3": Color(0xFFFFC04C),
 
   "graphBg": Color(0xFFC1EFFF),
+
+  "studentType1": Color(0XFFB0EBFF),
+  "studentType2": Color(0XFFD6CDFE),
+
   // Home Page Colors
 
   // "primary": Color(0xFF42C2FF),
@@ -69,7 +58,7 @@ const Map<String, Color> COLOR_THEME = {
 
   // Field Colors
   "searchFieldText": Colors.black,
-  "searchFieldBackground": Color(0xFFF4CB81),
+  "searchFieldBackground": Color(0xFFFFC861),
   "formFieldText": Colors.black,
   "formFieldHintText": Colors.white,
   "formFieldShadowColor": Color(0xFFF4CB81),

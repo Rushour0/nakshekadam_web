@@ -1,10 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nakshekadam_web/common_widgets/base_components.dart';
 
 import 'package:nakshekadam_web/globals.dart';
@@ -44,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
       // if (_user.phoneNumber != null) {
       //   Navigator.of(context).push(CustomPageRouter(child: const NameSex()));
       // } else {
+
       VxNavigator.of(context).clearAndPush(Uri.parse('/'));
       // }}
     } else {
@@ -128,8 +123,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    ORWidget(
-                        screenHeight: screenHeight, screenWidth: screenWidth),
+                    Padding(
+                      padding: EdgeInsets.only(top: screenHeight * 0.025),
+                      child: ORWidget(
+                          screenHeight: screenHeight, screenWidth: screenWidth),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(top: screenHeight * 0.025),
                       child: googleSignInCard(
@@ -145,6 +143,20 @@ class _LoginPageState extends State<LoginPage> {
                         screenHeight,
                         onClickFunction: login,
                         setState: setState,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: screenHeight * 0.025),
+                      child: continueCard(
+                        screenWidth,
+                        screenHeight,
+                        onClickFunction: (value) async {
+                          await VxNavigator.of(context)
+                              .clearAndPush(Uri.parse('/signup'));
+                        },
+                        setState: setState,
+                        title: "Don't have an acconut?\nCreate account",
+                        widthPercent: 0.15,
                       ),
                     )
                   ],

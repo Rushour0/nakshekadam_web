@@ -45,8 +45,8 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
+      // mainAxisSize: MainAxisSize.min,
+      // mainAxisAlignment: MainAxisAlignment.center,
       children: widget.tabs.asMap().keys.map(
         ((index) {
           tab = widget.tabs.elementAt(index);
@@ -58,10 +58,15 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
               }
               print("$_currentIndex : $index");
               isOnColor[index] = true;
-              isOnColor[_currentIndex] = false;
+              if (_currentIndex != -1) {
+                isOnColor[_currentIndex] = false;
+              }
+
               _currentIndex = index;
               widget.controller.setIndex = _currentIndex;
-
+              if (tab.extraFunction != null) {
+                tab.extraFunction!();
+              }
               setState(() {});
             },
             child: Container(
@@ -101,10 +106,12 @@ class VerticalTabBarItem {
     required this.icon,
     required this.label,
     this.labelStyle,
+    this.extraFunction,
   });
   final Widget icon;
   final String label;
   final TextStyle? labelStyle;
+  final Function? extraFunction;
 }
 
 class VerticalTabController extends ChangeNotifier {
