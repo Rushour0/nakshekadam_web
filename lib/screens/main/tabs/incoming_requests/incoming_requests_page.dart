@@ -33,7 +33,7 @@ class _IncomingRequestPageState extends State<IncomingRequestPage> {
       width: screenWidth,
       height: screenHeight,
       name: user != null ? user!.displayName ?? user!.email : '',
-      searchController: _searchController,
+      // searchController: _searchController,
       page: 'INCOMING REQUESTS',
       child: Padding(
         padding: EdgeInsets.only(top: screenHeight * 0.025),
