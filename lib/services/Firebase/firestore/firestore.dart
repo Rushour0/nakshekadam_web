@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
@@ -92,7 +94,8 @@ Future<void> setRequestStatus({
   otherData['updatedAt'] = otherData['updatedAt']?.millisecondsSinceEpoch;
 
   types.User otherUser = types.User.fromJson(otherData);
-  print(otherUser == currentUser);
+
+  // print(jsify(otherUser));
 
   await FirebaseChatCore.instance.createRoom(currentUser, otherUser);
 }
