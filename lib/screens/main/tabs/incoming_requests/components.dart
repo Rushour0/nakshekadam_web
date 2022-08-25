@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nakshekadam_web/globals.dart';
 import 'package:nakshekadam_web/screens/main/tabs/incoming_requests/incoming_requests_page.dart';
+import 'package:nakshekadam_web/services/Firebase/firestore/firestore.dart';
 
 class RequestCard extends StatelessWidget {
   const RequestCard({
@@ -16,6 +17,7 @@ class RequestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
+    print(incomingRequestInfo.photoURL);
     return Container(
       width: screenWidth * 0.175,
       height: screenHeight * 0.425,
@@ -63,9 +65,13 @@ class RequestCard extends StatelessWidget {
                   fixedSize: Size.fromWidth(screenWidth * 0.07),
                   primary: Colors.green,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  setRequestStatus(
+                    userId: incomingRequestInfo.uid,
+                  );
+                },
                 child: Text(
-                  'Accepted',
+                  'Accept',
                   style: TextStyle(
                     color: Colors.black,
                     fontFamily: 'DM Sans',
@@ -78,7 +84,12 @@ class RequestCard extends StatelessWidget {
                   primary: Colors.red,
                   fixedSize: Size.fromWidth(screenWidth * 0.07),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  setRequestStatus(
+                    accept: false,
+                    userId: incomingRequestInfo.uid,
+                  );
+                },
                 child: Text(
                   'Reject',
                   style: TextStyle(
@@ -108,12 +119,12 @@ class RequestCard extends StatelessWidget {
               screenHeight: screenHeight,
             ),
             VerticalDivider(color: Colors.grey),
-            dataSpaces(
-              title: 'Age',
-              subtitle: incomingRequestInfo.age.toString(),
-              screenHeight: screenHeight,
-            ),
-            VerticalDivider(color: Colors.grey),
+            // dataSpaces(
+            //   title: 'Age',
+            //   subtitle: incomingRequestInfo.age.toString(),
+            //   screenHeight: screenHeight,
+            // ),
+            // VerticalDivider(color: Colors.grey),
             dataSpaces(
               title: 'Class',
               subtitle: incomingRequestInfo.standard.toString(),
