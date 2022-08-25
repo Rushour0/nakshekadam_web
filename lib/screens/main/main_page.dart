@@ -11,8 +11,7 @@ import 'package:nakshekadam_web/screens/main/tabs/notifications/notifications_pa
 import 'package:nakshekadam_web/screens/main/tabs/profile/profile_page.dart';
 import 'package:nakshekadam_web/screens/main/tabs/student_types/student_types.dart';
 import 'package:nakshekadam_web/services/Firebase/fireauth/fireauth.dart';
-import 'package:nakshekadam_web/services/FlyerFirebaseChat/rooms.dart';
-import 'package:nakshekadam_web/services/FlyerFirebaseChat/users.dart';
+
 import 'package:velocity_x/velocity_x.dart';
 
 class MainPage extends StatefulWidget {

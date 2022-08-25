@@ -97,17 +97,17 @@ class _DetailsPageState extends State<DetailsPage> {
   Future<String> pickAFile(screenHeight) async {
     Reference? fileReference;
     FilePickerResult? result = await FilePicker.platform.pickFiles();
+    TaskSnapshot? snapshot;
 
     if (result != null) {
       Uint8List? fileBytes = result.files.first.bytes;
       setState(() {});
       String fileName = getCurrentUserId() + result.files.first.name;
-
       // Upload file
       try {
         fileReference = FirebaseStorage.instance.ref('uploads/$fileName');
 
-        fileReference
+        snapshot = await fileReference
             .putData(fileBytes!)
             .whenComplete(() => showSnackBar('File Uploaded'));
       } catch (e) {
@@ -126,7 +126,7 @@ class _DetailsPageState extends State<DetailsPage> {
         );
       }
     }
-    return fileReference!.getDownloadURL();
+    return snapshot!.ref.getDownloadURL();
   }
 
   @override

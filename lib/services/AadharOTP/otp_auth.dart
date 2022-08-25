@@ -37,6 +37,7 @@ class AadharAuthenticationNotifier extends ChangeNotifier {
   AadharAuthenticationNotifier() {
     _secondsRemaining = 120;
     checkingIfAuthenticated();
+    notifyListeners();
   }
   bool _isAuthenticated = false;
 

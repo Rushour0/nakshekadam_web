@@ -13,6 +13,7 @@ const String BOTTOM_NAVIGATION_IMAGE_DIRECTORY =
 const String IMAGE_DIRECTORY = "assets/images";
 
 const String STUDENT_TYPES_IMAGE_DIRECTORY = '$IMAGE_DIRECTORY/student_types';
+const String LOGIN_TYPES_IMAGE_DIRECTORY = '$IMAGE_DIRECTORY/login_types';
 
 const Map<String, dynamic> AGORA_CONFIG = {
   "appId": "3e7fb43c9b264f02892cf9a4177e4b80",

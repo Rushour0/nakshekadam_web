@@ -58,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
         //       context, '/admin_main_page', (route) => false);
         // }
         await VxNavigator.of(context).push(
-          Uri.parse("/details"),
+          Uri.parse("/choose_role"),
         );
         passwordController.text =
             confirmPasswordController.text = emailController.text = '';

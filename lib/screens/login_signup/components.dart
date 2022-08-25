@@ -280,7 +280,7 @@ Widget googleSignInCard(context, screenHeight, screenWidth, {bool? signIn}) {
         //       context, '/main_page', (route) => false);
         // } else {
         if (!(await checkDetails())) {
-          await VxNavigator.of(context).clearAndPush(Uri.parse('/details'));
+          await VxNavigator.of(context).clearAndPush(Uri.parse('/choose_role'));
         }
         if (await checkAadhar()) {
           await VxNavigator.of(context).clearAndPush(Uri.parse('/main'));

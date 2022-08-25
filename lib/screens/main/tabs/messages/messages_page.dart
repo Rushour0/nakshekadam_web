@@ -176,68 +176,70 @@ class _MessagesPageState extends State<MessagesPage> {
 
                         return Column(
                           children: snapshot.data!
-                              .where(
-                                (element) =>
-                                    element.users.first.role == types.Role.user,
-                              )
-                              .map(
-                                (room) => GestureDetector(
-                                  onTap: () {
-                                    _chatView = Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                          screenHeight / 20,
-                                        ),
-                                      ),
-                                      foregroundDecoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                          screenHeight / 20,
-                                        ),
-                                      ),
-                                      child: ChatPage(
-                                        room: room,
-                                      ),
-                                    );
-                                    setState(() {});
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top: screenHeight * 0.025,
+                              //     .where(
+                              //   (element) =>
+                              //       element.users.first.role ==
+                              //           types.Role.student ||
+                              //       element.users.first.role == types.Role.parent,
+                              // )
+                              .map((room) {
+                            print(room.users);
+                            return GestureDetector(
+                              onTap: () {
+                                _chatView = Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                      screenHeight / 20,
                                     ),
-                                    child: ListTile(
-                                      leading: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: screenWidth * 0.005),
-                                        child: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                            room.imageUrl ??
-                                                DEFAULT_PROFILE_PICTURE,
-                                          ),
-                                        ),
-                                      ),
-                                      title: Text(
-                                        room.name ?? '',
-                                        style: TextStyle(
-                                          fontFamily: 'DM Sans',
-                                          color: COLOR_THEME['primary'],
-                                          // fontWeight: FontWeight.bold,
-                                          fontSize: screenWidth * 0.01,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        room.users.last.role.toString(),
-                                        style: TextStyle(
-                                          fontFamily: 'DM Sans',
-                                          color: COLOR_THEME['primary'],
-                                          // fontWeight: FontWeight.bold,
-                                          fontSize: screenWidth * 0.01,
-                                        ),
+                                  ),
+                                  foregroundDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                      screenHeight / 20,
+                                    ),
+                                  ),
+                                  child: ChatPage(
+                                    room: room,
+                                  ),
+                                );
+                                setState(() {});
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: screenHeight * 0.025,
+                                ),
+                                child: ListTile(
+                                  leading: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: screenWidth * 0.005),
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                        room.imageUrl ??
+                                            DEFAULT_PROFILE_PICTURE,
                                       ),
                                     ),
                                   ),
+                                  title: Text(
+                                    room.name ?? '',
+                                    style: TextStyle(
+                                      fontFamily: 'DM Sans',
+                                      color: COLOR_THEME['primary'],
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: screenWidth * 0.01,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    room.users.last.role!.toShortString(),
+                                    style: TextStyle(
+                                      fontFamily: 'DM Sans',
+                                      color: COLOR_THEME['primary'],
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: screenWidth * 0.01,
+                                    ),
+                                  ),
                                 ),
-                              )
-                              .toList(),
+                              ),
+                            );
+                          }).toList(),
                         );
                       },
                     ),

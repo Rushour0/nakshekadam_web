@@ -140,6 +140,7 @@ Future<bool> checkFormFilled() async {
 // Check if form is filled
 Future<bool> checkAadhar() async {
   CollectionReference users = usersCollectionReference();
+  print('checking aadhar');
   User user = getCurrentUser()!;
   if (checkLoggedIn()) {
     Map<String, dynamic> data =
@@ -211,9 +212,10 @@ void initialData() async {
       id: user.uid,
       imageUrl: user.photoURL ?? DEFAULT_PROFILE_PICTURE,
       lastName: user.displayName!.split(' ')[1],
-      role: types.Role.counsellor,
+      role: null,
     ),
   );
+
   await users.doc(user.uid).set({
     'deviceIDs': (!kIsWeb) ? {FirebaseMessaging.instance.getToken(): 0} : {},
   }, SetOptions(merge: true));

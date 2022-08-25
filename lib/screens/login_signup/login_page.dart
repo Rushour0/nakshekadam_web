@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       //   Navigator.of(context).push(CustomPageRouter(child: const NameSex()));
       // } else {
 
-      VxNavigator.of(context).clearAndPush(Uri.parse('/'));
+      VxNavigator.of(context).clearAndPush(Uri.parse('/main'));
       // }}
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -7,6 +7,7 @@ import 'package:nakshekadam_web/firebase_options.dart';
 import 'package:nakshekadam_web/globals.dart';
 import 'package:nakshekadam_web/screens/login_signup/aadhar/aadhar_otp_page.dart';
 import 'package:nakshekadam_web/screens/login_signup/aadhar/aadhar_page.dart';
+import 'package:nakshekadam_web/screens/login_signup/choose_role.dart';
 import 'package:nakshekadam_web/screens/login_signup/details_page.dart';
 import 'package:nakshekadam_web/screens/login_signup/intro_page.dart';
 import 'package:nakshekadam_web/screens/login_signup/login_page.dart';
@@ -15,9 +16,6 @@ import 'package:nakshekadam_web/screens/login_signup/signup_page.dart';
 import 'package:nakshekadam_web/screens/main/main_page.dart';
 import 'package:nakshekadam_web/screens/splash.dart';
 import 'package:nakshekadam_web/services/Firebase/push_notification/push_notification_service.dart';
-import 'package:nakshekadam_web/services/FlyerFirebaseChat/chat.dart';
-import 'package:nakshekadam_web/services/FlyerFirebaseChat/login.dart';
-import 'package:nakshekadam_web/services/FlyerFirebaseChat/rooms.dart';
 
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -55,18 +53,17 @@ class MyApp extends StatelessWidget {
           '/intro': (uri, params) => const MaterialPage(child: IntroPage()),
           '/login': (uri, params) => const MaterialPage(child: LoginPage()),
           '/signup': (uri, params) => const MaterialPage(child: SignUpPage()),
-          '/chatlogin': (uri, params) =>
-              const MaterialPage(child: ChatLoginPage()),
+          '/choose_role': (uri, params) =>
+              const MaterialPage(child: ChooseRolePage()),
           '/details': (uri, params) => const MaterialPage(child: DetailsPage()),
           '/aadhar': (uri, params) => const MaterialPage(child: AadharPage()),
-          '/chatroom': (uri, params) => const MaterialPage(child: RoomsPage()),
+
           // '/wt': (uri,params) => const WalkThrough(),
           '/main': (uri, params) => const MaterialPage(child: MainPage()),
           '/aadhar_otp': (uri, params) =>
               const MaterialPage(child: AadharWebViewPage()),
           '/setup_complete': (uri, params) =>
               const MaterialPage(child: SetupCompletePage()),
-          '/chat': (uri, params) => MaterialPage(child: ChatPage(room: params)),
 
           // '/': (context) => const Splash(),
         },
