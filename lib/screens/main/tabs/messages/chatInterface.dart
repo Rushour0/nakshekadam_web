@@ -1,8 +1,13 @@
+import 'dart:html';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:nakshekadam_web/globals.dart';
+import 'package:nakshekadam_web/services/Firebase/firestore/firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
@@ -18,6 +23,37 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   bool _isAttachmentUploading = false;
+  bool isNegative = false;
+  String personUid = "";
+
+  @override
+  void initState() {
+    super.initState();
+    personUid = (widget.room.users
+        .where((element) =>
+            element.role == types.Role.student ||
+            element.role == types.Role.parent)
+        .toList()[0]
+        .id);
+    checkForNegativeSentiments();
+  }
+
+  Future<bool> checkForNegativeSentiments() async {
+    String userId = (widget.room.users
+        .where((element) =>
+            element.role == types.Role.student ||
+            element.role == types.Role.parent)
+        .toList()[0]
+        .id);
+    Map<String, dynamic> data =
+        (await firestore.collection('users').doc(userId).get()).data()
+            as Map<String, dynamic>;
+    print("A LOT OF DATA WAS HERERERERERER : ${data['firstName']}");
+    isNegative = data['negative_sentiments'] ?? false;
+    // print(data);
+    setState(() {});
+    return isNegative;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +61,17 @@ class _ChatPageState extends State<ChatPage> {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              String url = await FirebaseStorage.instance
+                  .ref('reports/$personUid.pdf')
+                  .getDownloadURL();
+              launchUrl(Uri.parse(url));
+            },
+            icon: Icon(Icons.download),
+          ),
+        ],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(screenHeight / 20),
@@ -34,13 +81,18 @@ class _ChatPageState extends State<ChatPage> {
         backgroundColor: COLOR_THEME['drawerBackground'],
         title: Padding(
           padding: EdgeInsets.only(left: screenWidth * 0.025),
-          child: Text(
-            widget.room.name ?? 'Chat',
-            style: TextStyle(
-              fontFamily: 'DM Sans',
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: screenWidth * 0.01,
+          child: FutureBuilder(
+            initialData: Colors.white,
+            future: checkForNegativeSentiments(),
+            builder: (builder, snapshot) => Text(
+              (widget.room.name ?? 'Chat') +
+                  (!isNegative ? "" : " - Experiencing negative sentiments"),
+              style: TextStyle(
+                fontFamily: 'DM Sans',
+                color: isNegative ? Colors.red : Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: screenWidth * 0.01,
+              ),
             ),
           ),
         ),

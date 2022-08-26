@@ -20,7 +20,7 @@ class _ProfessionalBackgroundState extends State<ProfessionalBackground> {
     data = (await userDocumentReference().get()).data();
     setState(() {
       age = data!['dateOfBirth'].split('-');
-      print(age);
+      // print(age);
     });
   }
 

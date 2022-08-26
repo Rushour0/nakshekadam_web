@@ -51,7 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
         password: passwordController.text,
       );
 
-      print(result);
+      // print(result);
       if (result[0] == 0) {
         // if ((await checkAdmin())!) {
         //   Navigator.pushNamedAndRemoveUntil(

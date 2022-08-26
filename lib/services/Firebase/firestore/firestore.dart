@@ -9,7 +9,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 CollectionReference userDocumentCollection({required String collection}) {
-  print(getCurrentUserId());
+  // print(getCurrentUserId());
   return firestore
       .collection('users')
       .doc(getCurrentUserId())
@@ -17,7 +17,7 @@ CollectionReference userDocumentCollection({required String collection}) {
 }
 
 DocumentReference exploreDataRoleSpecificDocument({required Role role}) {
-  print('called');
+  // print('called');
   return firestore
       .collection('explore_data')
       .doc(role.toString().split('.').last);

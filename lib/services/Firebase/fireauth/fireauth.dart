@@ -131,7 +131,7 @@ Future<bool> checkFormFilled() async {
   if (checkLoggedIn()) {
     Map<String, dynamic> data =
         (await users.doc(user.email).get()).data() as Map<String, dynamic>;
-    print(data);
+    // print(data);
     return data['formFilled'];
   }
   return false;
@@ -145,7 +145,7 @@ Future<bool> checkAadhar() async {
   if (checkLoggedIn()) {
     Map<String, dynamic> data =
         (await users.doc(user.uid).get()).data() as Map<String, dynamic>;
-    print(data);
+    // print(data);
     return data['aadharFilled'] ?? false;
   }
   return false;
@@ -158,7 +158,7 @@ Future<bool> checkDetails() async {
   if (checkLoggedIn()) {
     Map<String, dynamic> data =
         (await users.doc(user.uid).get()).data() as Map<String, dynamic>;
-    print(data);
+    // print(data);
     return data['detailsFilled'] ?? false;
   }
 
@@ -203,7 +203,7 @@ Future<bool> signOutGoogle() async {
 // Setup initial data
 void initialData() async {
   CollectionReference users = usersCollectionReference();
-  print(kIsWeb);
+  // print(kIsWeb);
   User user = getCurrentUser()!;
 
   await FirebaseChatCore.instance.createUserInFirestore(
@@ -227,7 +227,7 @@ Future<bool> deviceFCMKeyOperations({bool add = false}) async {
   late Map<String, dynamic>? deviceIDs, data;
   await userDocument.get().then((value) async {
     data = value.data() as Map<String, dynamic>;
-    print(data);
+    // print(data);
     // data!.putIfAbsent('deviceIDs', () => []);
     if (data!['deviceIDs'].runtimeType == int) {
       await userDocument.set(

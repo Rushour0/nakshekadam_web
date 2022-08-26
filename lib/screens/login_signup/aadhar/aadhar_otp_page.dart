@@ -70,7 +70,7 @@ class _AadharWebViewPageState extends State<AadharWebViewPage> {
           'universityName': temp['universityName'],
         }
       };
-      print(data);
+      // print(data);
 
       await setPublicData(
           data: data,

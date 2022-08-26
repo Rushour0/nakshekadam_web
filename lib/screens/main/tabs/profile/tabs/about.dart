@@ -20,7 +20,7 @@ class _AboutState extends State<About> {
     data = (await userDocumentReference().get()).data();
     setState(() {
       age = data!['dateOfBirth'].split('-');
-      print(age);
+      // print(age);
     });
   }
 

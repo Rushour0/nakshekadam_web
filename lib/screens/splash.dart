@@ -26,7 +26,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   );
 
   Future<void> check() async {
-    print('asdas');
+    // print('asdas');
     if (checkLoggedIn()) {
       // if (!(await checkAdmin())) {
       //   await signOut();

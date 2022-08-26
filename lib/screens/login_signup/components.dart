@@ -227,7 +227,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
         suffixIcon: IconButton(
           padding: EdgeInsets.only(right: screenHeight * 0.04),
           onPressed: () {
-            print("tapped");
+            // print("tapped");
 
             setState(() => hidePassword = !hidePassword);
           },
@@ -382,7 +382,7 @@ Widget continueCard(
         ),
       ),
       onPressed: () async {
-        print('I am pressed');
+        // print('I am pressed');
         if (setState != null) {
           setState(() {});
           await onClickFunction(screenHeight);
@@ -460,12 +460,12 @@ Widget uploadButton(
       ),
       onPressed: enabled
           ? () async {
-              print('I am pressed');
+              // print('I am pressed');
               if (setState != null) {
                 if (setFileUrl != null) {
                   final value = await onClickFunction(screenHeight);
                   setFileUrl(value);
-                  print(value);
+                  // print(value);
                   return;
                 }
                 setState(() {});

@@ -65,7 +65,7 @@ class _MobileAuthPageState extends State<MobileAuthPage> {
                     screenWidth,
                     screenHeight,
                     onClickFunction: (value) {
-                      print(value);
+                      // print(value);
                     },
                     title: 'Send OTP',
                     setState: setState,

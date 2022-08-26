@@ -56,7 +56,7 @@ class _IncomingRequestPageState extends State<IncomingRequestPage> {
                               element.data()['requestStatus'] == 'pending')
                           .map((e) {
                         final Map<String, dynamic> requestStatus = e.data();
-                        print(e.data());
+                        // print(e.data());
                         return RequestCard(
                             incomingRequestInfo:
                                 IncomingRequestInfo.fromJson(requestStatus));

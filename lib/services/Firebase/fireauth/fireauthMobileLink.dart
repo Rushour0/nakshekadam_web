@@ -8,7 +8,7 @@ Future<String> linkMobile(PhoneAuthCredential credential) async {
   try {
     final userCredential =
         await _auth.currentUser?.linkWithCredential(credential);
-    print(userCredential);
+    // print(userCredential);
   } on FirebaseAuthException catch (e) {
     switch (e.code) {
       case "provider-already-linked":
@@ -23,7 +23,7 @@ Future<String> linkMobile(PhoneAuthCredential credential) async {
     }
   }
   updateInitialData();
-  
+
   return "0";
 }
 
@@ -33,4 +33,3 @@ void updateInitialData() async {
     "phone": _auth.currentUser!.phoneNumber,
   });
 }
-
