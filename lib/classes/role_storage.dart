@@ -5,7 +5,7 @@ class RoleStorage {
   static final RoleStorage _roleStorage = RoleStorage._internal();
   static Role _role = Role.counsellor;
 
-  set setRole(Role role) => _role = role;
+  static set setRole(Role role) => _role = role;
 
   static Role get role => _role;
 

@@ -6,6 +6,7 @@ import 'package:nakshekadam_web/classes/role_storage.dart';
 import 'package:nakshekadam_web/common_widgets/base_components.dart';
 import 'package:nakshekadam_web/globals.dart';
 import 'package:nakshekadam_web/services/AadharOTP/otp_auth.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:nakshekadam_web/services/Firebase/fireauth/fireauth.dart';
 import 'package:nakshekadam_web/services/Firebase/firestore/firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -70,7 +71,12 @@ class _AadharWebViewPageState extends State<AadharWebViewPage> {
         }
       };
       print(data);
-      await setPublicData(data: data, role: RoleStorage.role);
+
+      await setPublicData(
+          data: data,
+          role: (temp['role'] == 'expert')
+              ? types.Role.expert
+              : types.Role.student);
       VxNavigator.of(context).clearAndPush(Uri.parse('/setup_complete'));
     } else if (!authenticationNotifier.isAuthenticated &&
         authenticationNotifier.secondsRemaining == 0 &&

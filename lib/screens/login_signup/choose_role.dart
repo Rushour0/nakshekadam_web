@@ -49,6 +49,7 @@ class _ChooseRolePageState extends State<ChooseRolePage> {
                 children: roles
                     .map((role) => GestureDetector(
                           onTap: () async {
+                            RoleStorage.setRole = role;
                             await updateDetails(role);
 
                             VxNavigator.of(context).push(Uri.parse('/details'));

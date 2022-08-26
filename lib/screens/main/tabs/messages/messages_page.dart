@@ -183,7 +183,12 @@ class _MessagesPageState extends State<MessagesPage> {
                               //       element.users.first.role == types.Role.parent,
                               // )
                               .map((room) {
-                            print(room.users);
+                            // print(room.users);s
+                            types.User meUser = room.users
+                                .where((element) =>
+                                    element.id != getCurrentUserId())
+                                .toList()[0];
+
                             return GestureDetector(
                               onTap: () {
                                 _chatView = Container(
@@ -228,7 +233,7 @@ class _MessagesPageState extends State<MessagesPage> {
                                     ),
                                   ),
                                   subtitle: Text(
-                                    room.users.last.role!.toShortString(),
+                                    meUser.role!.toShortString(),
                                     style: TextStyle(
                                       fontFamily: 'DM Sans',
                                       color: COLOR_THEME['primary'],
